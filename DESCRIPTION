@@ -10,5 +10,4 @@ Description: Workflow Evaluation
 Version: 0.1
 Date: 2015-12-16
 Depends: R (>= 2.14), R.oo (>= 1.13.0)
-Collate: 
 biocViews: 
