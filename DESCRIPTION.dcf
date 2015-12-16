@@ -1,0 +1,14 @@
+Package: WorkflowEval
+Imports: IdMappingAnalysis
+Maintainer: Kevin McDade <kkm5@pitt.edu>
+License: GPL-2
+Title: Workflow Option Evaluation
+LazyData: yes
+Type: Package
+Author: Kevin McDade
+Description: Workflow Evaluation
+Version: 0.1
+Date: 2015-12-16
+Depends: R (>= 2.14), R.oo (>= 1.13.0)
+Collate: 
+biocViews: 
