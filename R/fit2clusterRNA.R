@@ -1,3 +1,9 @@
+#' fit2clusters.RNAseq
+#' 
+#'  EM algorithm for RNAseq
+#'  @param Y data
+#'   
+#'   
 fit2clusters.RNAseq<-function(Y, Ysigsq,
                               piStart = c(0.5, 0.5),
                               VStart = c(0.1,0.1),
