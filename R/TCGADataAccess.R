@@ -73,3 +73,10 @@ sapply( cohorts, function( element ){
   path <- file.path( "data2", folder, file )
   assign( value = path, x = paste0(element, ".rnaseq.path"), envir = .GlobalEnv)
 }) 
+
+
+dir.create( 'hre')
+
+downloadTCGA( cancerTypes = 'ACC', dataSet = 'miR_gene_expression',
+              destDir = 'hre', date =  tail( checkTCGA('Dates'), 2 )[1],untarFile=TRUE, removeTar = TRUE )
+
