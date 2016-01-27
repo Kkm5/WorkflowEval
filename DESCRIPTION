@@ -1,5 +1,5 @@
 Package: WorkflowEval
-Imports: IdMappingAnalysis
+Imports: IdMappingAnalysis, magrittr
 Maintainer: Kevin McDade <kkm5@pitt.edu>
 License: GPL-2
 Title: Workflow Option Evaluation
