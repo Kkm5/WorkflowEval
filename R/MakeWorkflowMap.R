@@ -6,12 +6,16 @@
 ###
 
 
-paste(row.names(RNASEQDATA[1:dim(RNASEQDATA)[[1]]/2,]),row.names(RNASEQDATA[(dim(RNASEQDATA)[[1]]/2)+1:dim(RNASEQDATA)[[1]],]),sep=",")
-paste(row.names(RNASEQDATA[1:67,]),row.names(RNASEQDATA[68:134,]),sep=",")
+#paste(row.names(RNASEQDATA[1:dim(RNASEQDATA)[[1]]/2,]),row.names(RNASEQDATA[(dim(RNASEQDATA)[[1]]/2)+1:dim(RNASEQDATA)[[1]],]),sep=",")
+#paste(row.names(RNASEQDATA[1:67,]),row.names(RNASEQDATA[68:134,]),sep=",")
 
-MakeWorkflowMap<-function(gene_expression_data){
+MakeWorkflowMap<-function(gene_expression_data,protein_expression_data){
   rows_gene_data<-dim(gene_expression_data)[[1]]
-  paste(row.names(gene_expression_data[1:(rows_gene_data/2),]),row.names(gene_expression_data[((rows_gene_data/2)+1):rows_gene_data,]),sep=",")
-}
+  primary_symbols<-row.names(protein_expression_data)
+  workflow_options<-paste(row.names(gene_expression_data[1:(rows_gene_data/2),]),row.names(gene_expression_data[((rows_gene_data/2)+1):rows_gene_data,]),sep=",")
+  IdMap_df<-data.frame(primary_symbols,workflow_options)
+  row.names(IdMap_df)<-primary_symbols
+  return(IdMap_df)
+  }
 
   
