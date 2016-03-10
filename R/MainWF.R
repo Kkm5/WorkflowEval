@@ -29,13 +29,29 @@ modify_data <-function(dataset, exp_colname="Symbol"){
 
 
 
-assemble.data <- function(...) {
+WorkflowData <- function(...) {
   input_list <- list(...)
-  output_list <- lapply(X=input_list, function(x) {head(modify_data(x),n=2)})
+  output_list <- lapply(X=input_list, function(x) {modify_data(x)})
+  class(output_list)<-"WorkflowData"
   return(output_list)
 }
 
-Dataset.Collection<-assemble.data(RPPADATA,RNASEQDATAV1,RNASEQDATAV2)
+cname <-function(x,...) {
+  args<-list(...)
+  object<-list(attribute.name= "something",...)
+  class(object)<-"cname"
+  return(object)
+}
+
+myobject<-cname(x,2,3,4)
+
+Dataset.Collection<-WorkflowData(RPPADATA,RNASEQDATAV1,RNASEQDATAV2)
+
+print.WorkflowData<-function(WFdata) {
+  length(WFdata)
+}
+
+
 
 #Formatted_primary_data<-add_row_names_col(RPPADATA)
 #Formatted_secondary_data<-add_row_names_col(RNASEQDATA,exp_colname = "RNAseqWorkflow")
@@ -56,10 +72,10 @@ Identifier.Collection<-extract.identifiers(RPPADATA,RNASEQDATAV1,RNASEQDATAV2)
 
 ###plan split in RNASEQDATA in half for testing, remove tags, re-write MakeWorkFlowMap for multiple datasets
 ####Make a funtion that splits the similar data into chunks
-  
+#RNASEQDATAV1<-RNASEQDATA[1:67,]
 #RNASEQDATANAMESV1<-strsplit(row.names(RNASEQDATAV1),"_")
 #row.names(RNASEQDATAV1)<-sapply(RNASEQDATANAMESV1, "[", 1)
-
+#RNASEQDATAV2<-RNASEQDATA[68:134,]
 #RNASEQDATANAMESV2<-strsplit(row.names(RNASEQDATAV2),"_")
 #row.names(RNASEQDATAV2)<-sapply(RNASEQDATANAMESV2, "[", 1)
 ####################################################################################
@@ -70,6 +86,7 @@ assign.status<-function(x,status,data.type,version){
     status_tag<-paste(row.names(x),"_DRIVER",sep="")
   return(status_tag)
 }
+
 
 ######create a function to carry out this effect
 merge.options<-function(...){
@@ -89,8 +106,24 @@ row.names(RS2)<-assign.status(RNASEQDATAV2,status="workflow_option",data.type="R
 Merged.options<-rbind(P,RS1,RS2)
 
 
-make.workflow.map <- 
+make.workflow.map <- function(Merged.options){
+  drivers<-row.names(Merged.options[sapply(strsplit(row.names(Merged.options),"_"), "[", 2) == "DRIVER",])
+  workflow_options_data<-Merged.options[sapply(strsplit(row.names(Merged.options),"_"), "[", 2) == "WFO",]
+  workflow_options<-row.names(workflow_options_data[sapply(strsplit(row.names(workflow_options_data),"_"), "[", 2) == "WFO",])
+  imax<-max(unique(sapply(strsplit(row.names(workflow_options_data),"_"), "[", 4)),na.rm = TRUE)
+  imin<-min(unique(sapply(strsplit(row.names(workflow_options_data),"_"), "[", 4)),na.rm = TRUE)
+  workflow_options_merged<-paste(row.names(workflow_options_data[sapply(strsplit(row.names(workflow_options_data),"_"), "[", 4) == imin,]),row.names(workflow_options_data[sapply(strsplit(row.names(workflow_options_data),"_"), "[", 4) == imax,]),sep=",") 
+  WorkflowMap<-data.frame(drivers,workflow_options_merged)
+  ###when your ready class(Merged.options)<- "WorkflowMap"
+}
 
+
+  ####use unique...
+  #  workflow_options<-paste(row.names(gene_expression_data[1:(rows_gene_data/2),]),row.names(gene_expression_data[((rows_gene_data/2)+1):rows_gene_data,]),sep=",")
+  #  IdMap_df<-data.frame(primary_symbols,workflow_options)
+  #  row.names(IdMap_df)<-primary_symbols
+  #  return(IdMap_df)
+  #}
 #MakeWorkflowMap<-function(gene_expression_data,protein_expression_data){
 #  rows_gene_data<-dim(gene_expression_data)[[1]]
 #  primary_symbols<-row.names(protein_expression_data)
